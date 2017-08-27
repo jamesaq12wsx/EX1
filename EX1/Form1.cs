@@ -14,6 +14,71 @@ namespace EX1
 
         private void button1_Click(object sender, EventArgs e)
         {
+            List<CheckBox> checkBoxList = new List<CheckBox>();
+
+            List<NumericUpDown> amtList = new List<NumericUpDown>();
+
+            foreach(var obj in productsGroupBox.Controls)
+            {
+                if(obj.GetType() == typeof(CheckBox))
+                {
+                    checkBoxList.Add((CheckBox)obj);
+                }
+                else
+                {
+                    amtList.Add((NumericUpDown)obj);
+                }
+            }
+            /*
+            checkBoxList.Add(productACheckBox);
+
+            amtList.Add(productAUpDown);
+
+            checkBoxList.Add(productBCheckBox);
+
+            amtList.Add(productBUpDown);
+
+            checkBoxList.Add(productCCheckBox);
+
+            amtList.Add(productCUpDown);
+
+            checkBoxList.Add(productDCheckBox);
+
+            amtList.Add(productDUpDown);
+
+            checkBoxList.Add(productECheckBox);
+
+            amtList.Add(productEUpDown);
+            */
+
+            ShoppingCar shoppingCar = new ShoppingCar(checkBoxList, amtList);
+
+            if (nameTextBox.Text == "" || shoppingCar.ReturnTotal() == 0)
+            {
+                if (nameTextBox.Text == "" && shoppingCar.ReturnTotal() == 0)
+                {
+                    MessageBox.Show("Please enter buyer name and check any products");
+                }
+                else if (nameTextBox.Text == "")
+                {
+                    MessageBox.Show("Please enter buyer name");
+                }
+                else
+                {
+                    MessageBox.Show("Please check any products");
+                }
+            }
+            else
+            {
+                MessageBox.Show(nameTextBox.Text + Environment.NewLine + shoppingCar.ReturnProductsName() + Environment.NewLine + shoppingCar.ReturnTotal().ToString());
+            }
+
+            
+
+
+
+            //==================================================================================
+            /*
             int total=0;
             List<string> productsList = new List<string>();
             string showBuyerNameStr;
@@ -42,8 +107,9 @@ namespace EX1
                 Console.Write(total);
                 MessageBox.Show(showBuyerNameStr + Environment.NewLine + ProductsListStr() + Environment.NewLine + showTotalStr);
             }
+            */
         }
-
+        /*
         public bool CheckProductsCheckListBox()
         {
             bool check = false;
@@ -108,5 +174,11 @@ namespace EX1
 
             return showProductsListStr;
         }
+        */
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+        
     }
 }
