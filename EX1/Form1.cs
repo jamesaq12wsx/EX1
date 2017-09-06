@@ -14,6 +14,8 @@ namespace EX1
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int allTotal = 0;
+
             List<CheckBox> checkBoxList = new List<CheckBox>();
 
             List<NumericUpDown> amtList = new List<NumericUpDown>();
@@ -22,58 +24,68 @@ namespace EX1
 
             GroupBoxList(productsGroupBoxA, ref checkBoxList, ref amtList);
 
-            ShoppingCar shoppingCarA = new ShoppingCar(checkBoxList, amtList, productsGroupBoxA.Text);
+            ShoppingCar sc = new ShoppingCar(checkBoxList, amtList, productsGroupBoxA.Text);
 
-            sPCars.Add(shoppingCarA);
+            sPCars.Add(sc);
 
             GroupBoxList(productsGroupBoxB, ref checkBoxList, ref amtList);
 
-            ShoppingCar shoppingCarB = new ShoppingCar(checkBoxList, amtList, productsGroupBoxB.Text);
+            sc = new ShoppingCar(checkBoxList, amtList, productsGroupBoxB.Text);
 
-            sPCars.Add(shoppingCarB);
+            sPCars.Add(sc);
 
             GroupBoxList(productsGroupBoxC, ref checkBoxList, ref amtList);
 
-            ShoppingCar shoppingCarC = new ShoppingCar(checkBoxList, amtList, productsGroupBoxC.Text);
+            sc = new ShoppingCar(checkBoxList, amtList, productsGroupBoxC.Text);
 
-            sPCars.Add(shoppingCarC);
+            sPCars.Add(sc);
+
+            OverDiscount dis;
+
+            GiveDiscount gDis;
 
             //幫每個項目看要不要打折
-            foreach(var sc in sPCars)
+            foreach(var shop in sPCars)
             {
-                if(sc.ProductGroup == "甲區商品")
+                allTotal += (int)shop.ReturnTotal();
+
+                switch (sc.ProductGroup)
                 {
+                    case "甲商品區":
+                        dis = new OverDiscount(2, 1000, 0.9);
 
-                    OverDiscount dis = new OverDiscount(2, 1000, 0.9);
+                        dis.Discount(shop);
 
-                    dis.Discount(sc);
+                        break;
+                    case "乙區商品":
+
+                        dis = new OverDiscount(3, 5, 0.85);
+
+                        dis.Discount(shop);
+
+                        break;
+                    case "丙區商品":
+
+                        gDis = new GiveDiscount(3);
+
+                        gDis.Discount(shop);
+
+                        dis = new OverDiscount(1, 2, 0.95);
+
+                        dis.Discount(shop);
+
+                        break;
                 }
-                else if(sc.ProductGroup == "乙區商品")
-                {
 
-                    OverDiscount dis = new OverDiscount(3, 5, 0.85);
-
-                    dis.Discount(sc);
-                }
-                else
-                {
-
-                    GiveDiscount gDis = new GiveDiscount(3);
-
-                    gDis.Discount(sc);
-
-                    OverDiscount dis = new OverDiscount(1, 2, 0.95);
-
-                    dis.Discount(sc);
-                }
+                
             }
 
-            if (nameTextBox.Text == "" || (shoppingCarA.ReturnTotal() == 0 && shoppingCarB.ReturnTotal() == 0 && shoppingCarC.ReturnTotal() == 0))
+            if (nameTextBox.Text == "" || allTotal == 0)
             {
                 if (nameTextBox.Text == "")
                 {
                     MessageBox.Show("Please enter buyer name");
-                }else if(shoppingCarA.ReturnTotal() == 0 && shoppingCarB.ReturnTotal() == 0 && shoppingCarC.ReturnTotal() == 0)
+                }else if(allTotal == 0)
                 {
                     MessageBox.Show("Please check any item");
                 }
@@ -86,13 +98,15 @@ namespace EX1
 
                 showText += DateTime.Now.RocDate();
 
-                foreach(var sc in sPCars)
+                foreach(var shop in sPCars)
                 {
                     if(sc.ReturnTotalQuantity() != 0)
                     {
                         AddShowText(ref showText, sc);
                     }
                 }
+
+                showText += string.Format("\n總金額:{0:c0}",allTotal);
 
                 MessageBox.Show(showText);
             }
@@ -124,24 +138,5 @@ namespace EX1
                 }
             }
         }
-
-        //回傳民國年
-        public string GetRocDate()
-        {
-            DateTime dt = DateTime.Now;
-
-            string dty = (Int32.Parse(dt.Year.ToString()) - Int32.Parse("1911")).ToString();
-
-            string rocDate = string.Format("民國{0}年{1}月{2}號\t 時間:{3}", dty, dt.Month, dt.Day, dt.ToString("HH:mm"));
-
-            return rocDate;
-        }
-
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-        
     }
 }
