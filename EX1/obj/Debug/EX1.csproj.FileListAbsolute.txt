@@ -8,3 +8,13 @@ C:\Users\User\source\repos\EX1\EX1\obj\Debug\EX1.csproj.GenerateResource.Cache
 C:\Users\User\source\repos\EX1\EX1\obj\Debug\EX1.csproj.CoreCompileInputs.cache
 C:\Users\User\source\repos\EX1\EX1\obj\Debug\EX1.exe
 C:\Users\User\source\repos\EX1\EX1\obj\Debug\EX1.pdb
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\bin\Debug\EX1.exe.config
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\bin\Debug\EX1.exe
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\bin\Debug\EX1.pdb
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\obj\Debug\EX1.csprojResolveAssemblyReference.cache
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\obj\Debug\EX1.Form1.resources
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\obj\Debug\EX1.Properties.Resources.resources
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\obj\Debug\EX1.csproj.GenerateResource.Cache
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\obj\Debug\EX1.csproj.CoreCompileInputs.cache
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\obj\Debug\EX1.exe
+C:\Users\EN8846\Documents\教材\C#\EX1\EX1\obj\Debug\EX1.pdb

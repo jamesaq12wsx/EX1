@@ -18,163 +18,126 @@ namespace EX1
 
             List<NumericUpDown> amtList = new List<NumericUpDown>();
 
-            foreach(var obj in productsGroupBox.Controls)
+            List<ShoppingCar> sPCars = new List<ShoppingCar>();
+
+            GroupBoxList(productsGroupBoxA, ref checkBoxList, ref amtList);
+
+            ShoppingCar shoppingCarA = new ShoppingCar(checkBoxList, amtList, productsGroupBoxA.Text);
+
+            sPCars.Add(shoppingCarA);
+
+            GroupBoxList(productsGroupBoxB, ref checkBoxList, ref amtList);
+
+            ShoppingCar shoppingCarB = new ShoppingCar(checkBoxList, amtList, productsGroupBoxB.Text);
+
+            sPCars.Add(shoppingCarB);
+
+            GroupBoxList(productsGroupBoxC, ref checkBoxList, ref amtList);
+
+            ShoppingCar shoppingCarC = new ShoppingCar(checkBoxList, amtList, productsGroupBoxC.Text);
+
+            sPCars.Add(shoppingCarC);
+
+            //幫每個項目看要不要打折
+            foreach(var sc in sPCars)
             {
-                if(obj.GetType() == typeof(CheckBox))
+                if(sc.ProductGroup == "甲區商品")
                 {
-                    checkBoxList.Add((CheckBox)obj);
+
+                    OverDiscount dis = new OverDiscount(2, 1000, 0.9);
+
+                    dis.Discount(sc);
+                }
+                else if(sc.ProductGroup == "乙區商品")
+                {
+
+                    OverDiscount dis = new OverDiscount(3, 5, 0.85);
+
+                    dis.Discount(sc);
                 }
                 else
                 {
-                    amtList.Add((NumericUpDown)obj);
+
+                    GiveDiscount gDis = new GiveDiscount(3);
+
+                    gDis.Discount(sc);
+
+                    OverDiscount dis = new OverDiscount(1, 2, 0.95);
+
+                    dis.Discount(sc);
                 }
             }
-            /*
-            checkBoxList.Add(productACheckBox);
 
-            amtList.Add(productAUpDown);
-
-            checkBoxList.Add(productBCheckBox);
-
-            amtList.Add(productBUpDown);
-
-            checkBoxList.Add(productCCheckBox);
-
-            amtList.Add(productCUpDown);
-
-            checkBoxList.Add(productDCheckBox);
-
-            amtList.Add(productDUpDown);
-
-            checkBoxList.Add(productECheckBox);
-
-            amtList.Add(productEUpDown);
-            */
-
-            ShoppingCar shoppingCar = new ShoppingCar(checkBoxList, amtList);
-
-            if (nameTextBox.Text == "" || shoppingCar.ReturnTotal() == 0)
+            if (nameTextBox.Text == "" || (shoppingCarA.ReturnTotal() == 0 && shoppingCarB.ReturnTotal() == 0 && shoppingCarC.ReturnTotal() == 0))
             {
-                if (nameTextBox.Text == "" && shoppingCar.ReturnTotal() == 0)
-                {
-                    MessageBox.Show("Please enter buyer name and check any products");
-                }
-                else if (nameTextBox.Text == "")
+                if (nameTextBox.Text == "")
                 {
                     MessageBox.Show("Please enter buyer name");
-                }
-                else
+                }else if(shoppingCarA.ReturnTotal() == 0 && shoppingCarB.ReturnTotal() == 0 && shoppingCarC.ReturnTotal() == 0)
                 {
-                    MessageBox.Show("Please check any products");
+                    MessageBox.Show("Please check any item");
                 }
             }
             else
             {
-                MessageBox.Show(nameTextBox.Text + Environment.NewLine + shoppingCar.ReturnProductsName() + Environment.NewLine + shoppingCar.ReturnTotal().ToString());
+                string showText = "";
+
+                showText += nameTextBox.Text + "  ";
+
+                showText += GetRocDate();
+
+                foreach(var sc in sPCars)
+                {
+                    if(sc.ReturnTotalQuantity() != 0)
+                    {
+                        AddShowText(ref showText, sc);
+                    }
+                }
+
+                MessageBox.Show(showText);
             }
 
-            
-
-
-
-            //==================================================================================
-            /*
-            int total=0;
-            List<string> productsList = new List<string>();
-            string showBuyerNameStr;
-            string showTotalStr;
-
-            if(nameTextBox.Text == "" || !CheckProductsCheckListBox())
-            {
-                if(nameTextBox.Text == "" && !CheckProductsCheckListBox())
-                {
-                    MessageBox.Show("Please enter buyer name and check any products");
-                }
-                else if(nameTextBox.Text == "")
-                {
-                    MessageBox.Show("Please enter buyer name");
-                }
-                else
-                {
-                    MessageBox.Show("Please check any products");
-                }
-            }
-            else
-            {
-                showBuyerNameStr = "購買人 : " + nameTextBox.Text;
-
-                showTotalStr = "總金額 : $" + Total().ToString();
-                Console.Write(total);
-                MessageBox.Show(showBuyerNameStr + Environment.NewLine + ProductsListStr() + Environment.NewLine + showTotalStr);
-            }
-            */
         }
-        /*
-        public bool CheckProductsCheckListBox()
+
+        //將字串加到輸出字串
+        private void AddShowText(ref string s, ShoppingCar spCar)
         {
-            bool check = false;
-
-            for(int i = 0; i< productsCheckListBox.Items.Count; i++)
-            {
-                if (productsCheckListBox.GetItemChecked(i))
-                {
-                    check = true;
-                    return check;
-                }
-            }
-            return check;
+            s = s + string.Format("\n====={0}=====\n購買商品: {1}\n總金額: {2:C0}", spCar.ProductGroup, spCar.ReturnProductsName(), spCar.ReturnTotal());
         }
 
-        public int Total( )
+        //產生shoppingCar
+        public static void GroupBoxList(GroupBox gb, ref List<CheckBox> cbl, ref List<NumericUpDown> aml)
         {
-            int total=0;
-            string checkHolder;
-            
-            for (int i = 0; i < productsCheckListBox.Items.Count; i++)
+            cbl.Clear();
+
+            aml.Clear();
+
+            foreach (var obj in gb.Controls)
             {
-                if (productsCheckListBox.GetItemChecked(i))
+                if (obj.GetType() == typeof(CheckBox))
                 {
-                    checkHolder = productsCheckListBox.GetItemText(productsCheckListBox.Items[i]);
-                    int productPrice = Int32.Parse(checkHolder.Split('$')[1]);
-                    total += productPrice;
+                    cbl.Add((CheckBox)obj);
+                }
+                else if(obj.GetType() == typeof(NumericUpDown))
+                {
+                    aml.Add((NumericUpDown)obj);
                 }
             }
-            return total;
         }
 
-        public string ProductsListStr()
+        //回傳民國年
+        public string GetRocDate()
         {
-            string checkHolder="";
-            string showProductsListStr = "";
-            List<string> productsList = new List<string>();
-            for (int i = 0; i < productsCheckListBox.Items.Count; i++)
-            {
-                if (productsCheckListBox.GetItemChecked(i))
-                {
-                    checkHolder = productsCheckListBox.GetItemText(productsCheckListBox.Items[i]);
-                    string productName = checkHolder.Substring(0, checkHolder.IndexOf('，'));
-                    productsList.Add(productName);
-                }
-            }
+            DateTime dt = DateTime.Now;
 
-            int productsListCnt = 0;
-            foreach (var pro in productsList)
-            {
-                if (productsListCnt == 0)
-                {
-                    showProductsListStr += pro;
-                    productsListCnt++;
-                }
-                else
-                {
-                    showProductsListStr = showProductsListStr + '，' + pro;
-                    productsListCnt++;
-                }
-            }
+            string dty = (Int32.Parse(dt.Year.ToString()) - Int32.Parse("1911")).ToString();
 
-            return showProductsListStr;
+            string rocDate = string.Format("民國{0}年{1}月{2}號\t 時間:{3}", dty, dt.Month, dt.Day, dt.ToString("HH:mm"));
+
+            return rocDate;
         }
-        */
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
