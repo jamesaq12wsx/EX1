@@ -84,7 +84,7 @@ namespace EX1
 
                 showText += nameTextBox.Text + "  ";
 
-                showText += GetRocDate();
+                showText += DateTime.Now.RocDate();
 
                 foreach(var sc in sPCars)
                 {
