@@ -53,6 +53,7 @@
     </Compile>
     <Compile Include="GiveDiscount.cs" />
     <Compile Include="IDiscount.cs" />
+    <Compile Include="MyDateTimeExtension.cs" />
     <Compile Include="OverDiscount.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Program.cs" />
